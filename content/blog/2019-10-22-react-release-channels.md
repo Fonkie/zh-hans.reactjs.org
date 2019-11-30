@@ -1,102 +1,102 @@
 ---
-title: "使用 React 预发布版为新功能打基础"
+title: "为 React 预览版的未来做准备"
 author: [acdlite]
 ---
 
-为了与 React 生态系统的合作伙伴共享即将发生的变化，我们正式建立了预发布的渠道。我们希望通过这一过程有助于我们胸有成竹地对 React 进行更改，并为开发人员提供尝试试验阶段功能的机会。
+为了与 React 生态系统的合作伙伴分享即将到来的变化，我们正在建立正式的预览通道。我们希望这个过程能帮助我们对 React 的变化更加自信，并让开发者有机会尝试实验性的功能。
 
-> 此文章与从事框架，库或开发工具的开发人员息息相关。而主要使用 React 来构建应用程序的开发者无需担心此预发布渠道。
+> 这篇文章将与框架、库或者开发者工具的开发者相关。主要使用 React 来构建面向用户的应用程序的开发人员不需要担心我们的预览通道。
 
-React 依靠强大的开源社区收集错误报告，pull request 以及 [RFC](https://github.com/reactjs/rfcs)。为了鼓励大家反馈，我们打算共享一些特殊的 React 版本，其中可能包括未发布的功能。
+React 依赖于蓬勃发展的开源社区来提交 bug 报告，pull 请求和[提交 RFC](https://github.com/reactjs/rfcs)。为了鼓励反馈，我们有时会分享包含未发布特性的 React 的特殊版本。
 
-由于 React 的实际来源是[Github 公有库](https://github.com/facebook/react)，因此你始终可以通过此仓库构建一个包含最新修改的 React 副本。但是，对于开发者来说，使用 npm 安装 React 会更加容易，因此我们会时常发布预发布版本到 npm registry 中。最新的示例是 16.7 Alpha 版，其中包括 Hook API 的早期版本。
+由于 React 实际来源于我们的 [公共 GitHub 库](https://github.com/facebook/react)，你可以构建一个包含最新变化的 React 副本。但是，对于开发人员来说，从 npm 安装 React 非常容易，因此我们会将预览版发布到 npm 注册表。最近的例子是 16.7 alpha 版本，其中包括了早期版本的 Hook API。
 
-我们期望开发者更容易地测试 React 的预发布版本，因此我们将通过三个单独的发布渠道来规范我们的流程。
+我们想让开发人员更容易地测试 React 的预览版，因此我们使用了三个独立的发布通道来规范我们的流程。
 
-## 发布渠道 {#release-channels}
+## 发布通道
 
-> 本文中的相关信息可以查阅[发布渠道](/docs/release-channels.html)章节。每次我们的发布流程发生变化，我们都会更新该流程。
+> 这篇文章中的内容也可以在我们的[发布通道](/docs/release-channels.html)文档页面找到。每当发布过程发生变化时，我们都会更新该文档。
 
-React 的每个发布渠道都是针对不同的用例进行设计地：
+React 的每个发布通道都是针对不同的用例设计的：
 
-- [**最新**](#latest-channel)版本用于稳定的 semver React 版本。此版本可通过 npm 安装获取。此渠道为目前大家已经在用的方式。**其主要用于所有面向用户的 React 应用程序。**
-- [**Next**](#next-channel) 版本主要用于追踪 React 源码仓库的 master 分支。我们会将其视为下一个次要版本发布的候选版本。使用它可以进行 React 与第三方项目间的集成测试。
-- [**实验阶段**](#experimental-channel)版本包含稳定版本中不提供的实验阶段的 API 与功能。同时它也追踪了 master 分支，但启用了附加新功能的标志。使用此渠道可以尝试即将发布的功能。
+- [**Latest**](#latest-channel)是稳定的 React semver 版本的发布通道。这是你从 npm 安装 React 正在使用的通道。 **对于所有面向用户的 React 应用程序，请使用此通道**
+- [**Next**](#next-channel) 跟踪 React 源代码库的 master 分支，下一个次要 semver 版本的候选版本，用于 React 和第三方项目之间的集成测试。
+- [**Experimental**](#experimental-channel)包括实验性 API 和在稳定版本中不可用的特性。这些特性也会跟踪 master 分支，但会打开附加特性的标记。使用此通道来试用即将发布的特性。
 
-所有版本都将发布到 npm，但只要最新版本遵循[语义版本控制](/docs/faq-versioning.html)。预发布版本（应用于 Next 版本和实验渠道的版本）会根据其内容的哈希值生成版本，例如，Next 的版本为 `0.0.0-1022ee0ec`，实验版为 `0.0.0-experimental-1022ee0ec`。
+所有的版本都会发布到 npm，但只有最新的版本使用了[语义版本](/docs/faq-versioning.html)。预览版（Next 和 Experimental 通道的版本）是根据其内容的哈希值生成的版本，例如 `0.0.0-1022ee0ec` 用于 Next 版本，`0.0.0-experimental-1022ee0ec` 用于 Experimental 版本。
 
-**最新版是面向用户应用程序的唯一官方支持发布渠道**。提供 Next 和实验版本的目的是用于测试，我们并不保证功能在这两个版本中不发生变化。因为它们并不遵循用于最新版发布的 semver 协议。
+**对于面向用户的应用程序，官方支持的唯一发布通道是 Latest**。Next 和 Experimental 版本仅用于测试目的，我们不能保证不同版本之间的行为不会发生变化。它们不遵循我们用于 Latest 版本的 semver 协议。
 
-通过将预发布版发布到与稳定版同一注册表中，我们可以利用许多支持 npm 工作流的工具，诸如 [unpkg](https://unpkg.com) 和 [CodeSandbox](https://codesandbox.io)。 
+将预览版发布到与稳定版本相同的注册表，我们可以利用许多支持 npm 工作流的工具，比如：[unpkg](https://unpkg.com) 和 [CodeSandbox](https://codesandbox.io)。
 
-### 最新版渠道 {#latest-channel}
+### Latest 通道
 
-最新版是用于稳定 React 版本的渠道。它对应是 npm 中 `latest` 标签。此版本是所有交付给真实用户的 React 应用程序的推荐版本。
+Latest 用于稳定的 React 版本，它对应于 npm 上的 `latest` 标签，是所有 React 应用发布给实际用户的推荐通道。
 
-**如果你不确定使用哪个版本，则选择最新版本。**如果你是 React 开发者，那这就是你正确的选择。
+**如果你不确定应该使用哪个通道，那就用 Latest** 如果你是 React 开发人员，那么这就是你正在使用的通道。
 
-你可以希望最新版的更新足够稳定。版本遵循语义版本控制方案。你可以在[版本政策](/docs/faq-versioning.html)中详细了解我们对稳定性和增量迁移的承诺。
+你可以认为 Latest 的更新是非常稳定的。版本号遵循语义化版本控制方案。在[版本号规则](/docs/faq-versioning.html)中了解更多关于我们对稳定性和增量迁移的承诺。
 
-### Next 版渠道 {#next-channel}
+### Next 通道
 
-Next 属于预发布渠道，用于追踪 React 仓库的 master 分支。我们在 Next 渠道中使用预发布版本作为最新版发布渠道的候选版本。你可以将 Next 视为最新版的超集，它的更新频率更高。
+Next 通道是一个预览通道，用于跟踪 React 库的 master 分支。我们使用 Next 通道的预览版作为 Latest 通道的候选版本。 你可以将 Next 视为 Latest 的超集，该超集的更新更频繁。
 
-最新的 Next 发布版与最新的最新发布版之间的更改程度，大致与两个 semver 次版本之间的更改程度相同。但是，**Next 发布渠道不遵循语义版本控制**。你可能希望在 Next 渠道中的后续发布版本之间偶尔有重大更改。
+最近的 Next 版本和 Latest 版本之间的变化程度，与两个次要的 semver 版本之间的变化程度大致相同。但是，**Next 通道不符合语义版本。**在 Next 通道中，你应该预期到后续的版本中偶尔会有不兼容的改动。
 
-**不要在面向用户的应用程序中使用预发布版本。**
+**请勿在面向用户的应用程序中使用预览版。**
 
-Next 渠道中的发行版本在 npm 中携带 `next` 标签发布。版本会根据构建内容的哈希值生成，例如 `0.0.0-1022ee0ec`。
+在 Next 中的预览版发布在 npm 上，带有 `next` 标记。版本号是根据其构建内容的哈希值生成的，例如：`0.0.0-1022ee0ec`。
 
-#### 使用 Next 渠道版本进行集成测试 {#using-the-next-channel-for-integration-testing}
+#### 使用 Next 通道进行集成测试
 
-Next 渠道旨在支持 React 与其他项目直接的集成测试。
+Next 通道用于支持 React 和其他项目之间的集成测试。
 
-React 中的所有更改在发布之前都需进行大量的内部测试。但是，在整个 React 生态系统中使用了无数的环境与配置，因此我们不可能针对每一项进行测试。
+React 的所有更改在发布之前都要经过大量的内部测试。然而，React 的整个生态系统使用了无数的环境和配置，我们不可能针对每一个进行测试。
 
-如果你是 React 第三方框架，库，开发者工具或类似基础设施项目的作者，则可以通过定期针对最新版本运行的测试用例，帮助我们一起维持 React 稳定，为你的用户和整个 React 社区保驾护航。如果你对此有兴趣，请按照下列步骤进行操作：
+如果你是第三方 React 框架、库、开发者工具或类似基础框架类型项目的作者，可以针对最近的更新，定期运行测试用例，帮助我们为你的用户和整个 React 社区保持 React 的稳定。如果你感兴趣，请按照以下步骤操作：
 
-- 在你喜欢的持续集成平台上设置 cron job。[CircleCI](https://circleci.com/docs/2.0/triggers/#scheduled-builds) 和 [Travis CI](https://docs.travis-ci.com/user/cron-jobs/) 均支持 cron job。
-- 在 cron job 中，使用 npm 的 `next` 标签将 React 版本更新至 Next 渠道中的最新版本。使用 npm cli：
+- 使用你喜欢的持续集成平台设置 cron 作业。cron 作业由 [CircleCI](https://circleci.com/docs/2.0/triggers/#scheduled-builds) 和 [Travis CI](https://docs.travis-ci.com/user/cron-jobs/) 支持。
+- 在 cron 作业中，使用 npm 的 `next` tag，将 React 包更新到 Next 通道中最近的 React 版本。使用 npm cli：
 
   ```
   npm update react@next react-dom@next
   ```
 
-  或者使用 yarn：
+  或 yarn：
 
   ```
   yarn upgrade react@next react-dom@next
   ```
-- 针对更新的 packages 执行测试用例。
-- 如果均通过，那么恭喜你！你的项目可以与下个小版本的 React 一起使用。
-- 如果发生意外中断，请通过[提交 issus](https://github.com/facebook/react/issues) 告知我们。
+- 针对更新的包运行你的测试用例。
+- 如果一切顺利，那就太好了！你可以预期你的项目将在下一个次要的 React 版本中正常工作。
+- 如果发生异常，请通过[提交 issue](https://github.com/facebook/react/issues)告知我们。
 
-Next.js 使用了此工作流。你可以将它们 [CircleCI 配置](https://github.com/zeit/next.js/blob/c0a1c0f93966fe33edd93fb53e5fafb0dcd80a9e/.circleci/config.yml) 作为示例进行参考。
+使用这个工作流的项目是 Next.js。（不开玩笑，这是真的！）你可以参考他们的 [CircleCI 配置](https://github.com/zeit/next.js/blob/c0a1c0f93966fe33edd93fb53e5fafb0dcd80a9e/.circleci/config.yml)作为示例。
 
-### 实验阶段渠道 {#experimental-channel}
+### Experimental 通道
 
-与 Next 相似，实验阶段通道是一个预发布通道，用于追踪 React 仓库 master 分支。但不同于 Next 的是，实验阶段的发布版本包含尚未准备好广泛推广的功能及 API。
+与 Next 一样，Experimental 通道也是一个预览版的通道，用于跟踪 React 库的 master 分支。 与 Next 不同的是，Experimental 版本包括尚未准备好更广泛发布的其他特性和 API。
 
-通常，对 Next 更新时也会对实验版本进行更新。它们基于相同的源，但是构建时会使用不同的功能标记。
+通常，对 Next 的更新伴随着对 Experimental 相应的更新。它们基于相同的源修订，但使用一组不同的特性标志构建。
 
-实验阶段发布的版本可能与 Next 和最新版本的发布均不相同。**不要在面向用户的应用程序中使用实验阶段版本。** 你应该能够想象到实验渠道中发布的版本会频繁进行破坏性更新。
+Experimental 版本可能与 Next 和 Latest 版本有很大的不同。**请勿在面向用户的应用程序中使用 Experimental 版本。**在 Experimental 通道中，你应该预期到版本之间会有不兼容的改动。
 
-实验版本会在 npm 上会以 `experimental` 标签的形式发布。版本会根据构建内容的哈希值生成，例如，`0.0.0-experimental-1022ee0ec`。
+在 Experimental 中的预览版发布在 npm 上，带有 `experimental` tag。版本号是根据其构建内容的哈希值生成的，例如：`0.0.0-experimental-1022ee0ec`。
 
-#### 实验阶段发布包含哪些内容？ {#what-goes-into-an-experimental-release}
+#### 什么是 Experimental 版本?
 
-实验阶段功能并未打算公开发布，在最终确定之前可能会发生巨大变化。有些实验功能可能永远不会完成 —— 我们进行实验的目的是为了测试变更提案的可行性。
+Experimental 特性是指尚未准备好向更广泛的公众发布的功能，在最终确定之前可能会发生重大变化。某些实验可能永远不会最终确定 —— 我们进行实验的原因是测试所提出的变更的可行性。
 
-例如，如果我们在宣布发布 Hook 时，其已经存在在实验渠道中，我们会在最新版本发布 Hook 之前几周，将其发布到实验渠道中。
+例如，如果 Experimental 通道在宣布 Hook 的时候就已经存在，我们会在 Latest 版本发布前几周就发布到 Experimental 通道。
 
-你可能会发现针对实验阶段进行集成测试很有必要。但是，请注意，实验阶段版本的稳定性是不如 Next 版本的。**我们并不保证实验版本之间的稳定性。**
+你可能会发现在 Experimental 上运行集成测试是有价值的。这取决于你。但是，请注意 Experimental 甚至比 Next 更不稳定。**我们不保证 Experimental 版本的稳定性。**
 
-#### 如何了解有关实验功能的更多信息？{#how-can-i-learn-more-about-experimental-features}
+#### 怎样才能了解更多的 Experimental 特性?
 
-实验性的功能可能会有文档，也可能不会有文档。通常，在实验渠道的内容发布到 Next 或 Stable 中之前，才会编写文档。
+Experimental 特性可能会被记录，也可能不会被记录。通常，实验直到接近 Next 或 Stable 版本时才会被记录。
 
-如果找不到文档，则可能会附有 [RFC](https://github.com/reactjs/rfcs) 说明。
+如果未记录某项特性，则可能附带 [RFC](https://github.com/reactjs/rfcs)。
 
-当我们准备发布新的实验内容时，我们会发布到 React 博客中，但这并不意味着我们将公开发布每个实验内容。
+当我们准备宣布新的实验时，我们将发布到 React 博客，但这并不意味着我们将公布每个实验。
 
-欲查看完整的变更列表，你可以参考 Github 公有库中的[历史记录](https://github.com/facebook/react/commits/master)。
+你可以随时查阅我们的公共 GitHub 库的[历史](https://github.com/facebook/react/commits/master)，以获得完整的更改列表。
